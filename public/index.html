@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Interações</title>
+  <script src="https://fileschat.sfo2.cdn.digitaloceanspaces.com/public/libs/wlclient.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script>
+    // Função para aguardar WlExtension estar disponível
+    function waitForWlExtension() {
+      return new Promise((resolve) => {
+        if (typeof window.WlExtension !== 'undefined') {
+          resolve();
+        } else {
+          const checkInterval = setInterval(() => {
+            if (typeof window.WlExtension !== 'undefined') {
+              clearInterval(checkInterval);
+              resolve();
+            }
+          }, 100);
+
+          // Timeout após 5 segundos
+          setTimeout(() => {
+            clearInterval(checkInterval);
+            resolve();
+          }, 5000);
+        }
+      });
+    }
+
+    // Inicialização
+    window.addEventListener('load', async function () {
+      try {
+        // Aguarda WlExtension estar disponível
+        await waitForWlExtension();
+
+        // Registra a extensão no menu
+        if (window.WlExtension && window.WlExtension.initialize) {
+          window.WlExtension.initialize({
+            navbar: [
+              {
+                id: 'dash_atendimentos-categorizados_item',
+                type: 'item',
+                icon_url: 'data:image/svg+xml;base64,' + btoa(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+  <path d="M14 2v6h6"/>
+  <line x1="9" y1="17" x2="9" y2="12"/>
+  <line x1="12" y1="17" x2="12" y2="10"/>
+  <line x1="15" y1="17" x2="15" y2="14"/>
+</svg>
+`),
+                text: 'Atendimentos Categorizados',
+                parentId: 'indicators',
+                callback: () => {
+                  // Abre o dashboard no mesmo domínio
+                  const dashboardUrl = window.location.origin + '/index.html';
+                  window.WlExtension.openPage({ url: dashboardUrl });
+                }
+              }
+            ]
+          });
+
+          console.log('Extensão Dashboard Interações registrada com sucesso!');
+        }
+      } catch (error) {
+        console.error('Erro na inicialização da extensão:', error);
+      }
+    });
+  </script>
+
+  <!-- Entrada do bundle gerado pelo webpack -->
+  <script src="/bundle.js"></script>
+</body>
+
+</html>

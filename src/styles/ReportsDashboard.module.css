@@ -1,0 +1,75 @@
+.dashboardContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #e9edf2; /* cinza claro de fundo */
+  color: #1f2933;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 24px 32px;
+  box-sizing: border-box;
+}
+
+.stateMessage {
+  margin: 16px 0;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  font-size: 13px;
+}
+
+.errorMessage {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+.fullScreenLoader {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.loaderBox {
+  padding: 18px 22px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #111827;
+  font-size: 14px;
+}
+
+.topProgressWrapper {
+  margin-bottom: 12px;
+}
+
+.topProgressBar {
+  height: 4px;
+  border-radius: 999px;
+}
+
+@media (max-width: 1024px) {
+  .content {
+    padding: 16px;
+  }
+}
+
