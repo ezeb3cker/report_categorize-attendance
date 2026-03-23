@@ -34,7 +34,7 @@ const MultiSelect = ({
   };
 
   return (
-    <div className={styles.field}>
+    <div className={`${styles.field} ${styles.multiSelectRoot}`}>
       <label>{label}</label>
       <div
         className={`${styles.multiSelectControl} ${
@@ -50,20 +50,14 @@ const MultiSelect = ({
       </div>
       {isOpen && !disabled && (
         <div className={styles.multiSelectDropdown}>
-          <button
-            type="button"
-            className={styles.multiSelectClear}
-            onClick={(e) => {
-              e.stopPropagation();
-              onChange({ target: { name, value: [] } });
-              onClose?.();
-            }}
-          >
-            Limpar seleção
-          </button>
           <div className={styles.multiSelectOptions}>
             {options.map((opt) => (
-              <label key={opt} className={styles.multiSelectOption}>
+              <label
+                key={opt}
+                className={`${styles.multiSelectOption} ${
+                  values.includes(opt) ? styles.multiSelectOptionSelected : ""
+                }`}
+              >
                 <input
                   type="checkbox"
                   checked={values.includes(opt)}
@@ -73,6 +67,19 @@ const MultiSelect = ({
                   }}
                 />
                 <span>{opt}</span>
+                {values.includes(opt) && (
+                  <button
+                    type="button"
+                    className={styles.optionRemoveButton}
+                    aria-label={`Remover ${opt}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggle(opt);
+                    }}
+                  >
+                    ×
+                  </button>
+                )}
               </label>
             ))}
             {!options.length && (
@@ -118,7 +125,18 @@ const ReportFilters = ({
   }, []);
 
   return (
-    <section ref={containerRef} className={styles.filtersContainer}>
+    <section
+      ref={containerRef}
+      className={styles.filtersContainer}
+      onMouseDownCapture={(event) => {
+        if (!openName) return;
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (!target.closest(`.${styles.multiSelectRoot}`)) {
+          setOpenName(null);
+        }
+      }}
+    >
       <div className={styles.row}>
         <div className={styles.field}>
           <label>Data inicial</label>
