@@ -57,6 +57,8 @@ const DailyChart = ({ data, onFilterChange }) => {
 
   const options = {
     responsive: true,
+    // Importante para respeitar a altura definida via CSS (.chartBody/.compactChartBody)
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       // chartjs-plugin-datalabels pode estar registrado globalmente
