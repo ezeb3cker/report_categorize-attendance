@@ -34,6 +34,8 @@ const ChannelConversionChart = ({ data, onFilterChange }) => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: "nearest", intersect: false },
     plugins: {
       legend: { display: false },
       tooltip: {

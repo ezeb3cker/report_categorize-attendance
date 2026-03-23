@@ -35,6 +35,8 @@ const SectorConversionChart = ({ data, onFilterChange }) => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: "nearest", intersect: false },
     plugins: {
       legend: { display: false },
       // desativa exibição de valores dentro das barras para este gráfico

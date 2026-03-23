@@ -47,6 +47,7 @@ const CategoryChart = ({ data, onFilterChange }) => {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: { mode: "nearest", intersect: false },
     plugins: {
       // chartjs-plugin-datalabels pode estar registrado globalmente
       datalabels: { display: false },
