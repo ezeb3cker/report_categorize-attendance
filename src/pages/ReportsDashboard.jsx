@@ -198,7 +198,7 @@ const ReportsDashboard = () => {
 
   return (
     <div className={styles.pageRoot}>
-      <PageHeader title="Dashboard - Origem de Leads" />
+      <PageHeader title="Dashboard - Atendimentos Categorizados" />
       <div className={styles.mainShell}>
         <div className={styles.content}>
           {loading && (
