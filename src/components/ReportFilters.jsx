@@ -9,6 +9,22 @@ const getUniqueValues = (data, key) => {
   return Array.from(set);
 };
 
+const SelectChevron = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    aria-hidden="true"
+    focusable="false"
+    className={styles.chevronSvg}
+  >
+    <path
+      fill="currentColor"
+      d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+    />
+  </svg>
+);
+
 const MultiSelect = ({
   label,
   name,
@@ -19,13 +35,9 @@ const MultiSelect = ({
   placeholder,
   isOpen,
   onToggleOpen,
-  onClose,
 }) => {
-
-  const displayValue =
-    !values || values.length === 0
-      ? placeholder || label
-      : values.join(", ");
+  const hasSelection = values && values.length > 0;
+  const displayValue = hasSelection ? values.join(", ") : placeholder || label;
 
   const handleToggle = (option) => {
     const exists = values.includes(option);
@@ -34,8 +46,8 @@ const MultiSelect = ({
   };
 
   return (
-    <div className={`${styles.field} ${styles.multiSelectRoot}`}>
-      <label>{label}</label>
+    <div className={`${styles.field} ${styles.filter} ${styles.multiSelectRoot}`}>
+      <h6 className={styles.filterLabel}>{label}</h6>
       <div
         className={`${styles.multiSelectControl} ${
           isOpen ? styles.multiSelectControlOpen : ""
@@ -44,9 +56,33 @@ const MultiSelect = ({
           if (disabled) return;
           onToggleOpen?.();
         }}
+        role="button"
+        tabIndex={disabled ? -1 : 0}
+        onKeyDown={(e) => {
+          if (disabled) return;
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onToggleOpen?.();
+          }
+        }}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
       >
-        <span className={styles.multiSelectText}>{displayValue}</span>
-        <span className={styles.multiSelectArrow}>▾</span>
+        <div className={styles.selectValueContainer}>
+          <span
+            className={`${styles.multiSelectText} ${
+              !hasSelection ? styles.selectPlaceholder : ""
+            }`}
+          >
+            {displayValue}
+          </span>
+        </div>
+        <div className={styles.selectIndicators}>
+          <span className={styles.indicatorSeparator} aria-hidden="true" />
+          <span className={styles.indicatorChevron}>
+            <SelectChevron />
+          </span>
+        </div>
       </div>
       {isOpen && !disabled && (
         <div className={styles.multiSelectDropdown}>
@@ -112,7 +148,6 @@ const ReportFilters = ({
     onChange({ ...filters, [name]: value });
   };
 
-  // Fecha qualquer dropdown ao clicar fora do container
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!containerRef.current) return;
@@ -138,25 +173,27 @@ const ReportFilters = ({
       }}
     >
       <div className={styles.row}>
-        <div className={styles.field}>
-          <label>Data inicial</label>
+        <div className={`${styles.field} ${styles.filter}`}>
+          <h6 className={styles.filterLabel}>Data inicial</h6>
           <input
             type="date"
             name="startDate"
             value={filters.startDate || ""}
             onChange={handleInputChange}
             disabled={disabled}
+            className={!filters.startDate ? styles.dateInputEmpty : undefined}
           />
         </div>
 
-        <div className={styles.field}>
-          <label>Data final</label>
+        <div className={`${styles.field} ${styles.filter}`}>
+          <h6 className={styles.filterLabel}>Data final</h6>
           <input
             type="date"
             name="endDate"
             value={filters.endDate || ""}
             onChange={handleInputChange}
             disabled={disabled}
+            className={!filters.endDate ? styles.dateInputEmpty : undefined}
           />
         </div>
 
@@ -170,7 +207,6 @@ const ReportFilters = ({
           onToggleOpen={() =>
             setOpenName((prev) => (prev === "setor" ? null : "setor"))
           }
-          onClose={() => setOpenName(null)}
           onChange={(event) =>
             onChange({ ...filters, [event.target.name]: event.target.value })
           }
@@ -187,7 +223,6 @@ const ReportFilters = ({
           onToggleOpen={() =>
             setOpenName((prev) => (prev === "usuario" ? null : "usuario"))
           }
-          onClose={() => setOpenName(null)}
           onChange={(event) =>
             onChange({ ...filters, [event.target.name]: event.target.value })
           }
@@ -206,7 +241,6 @@ const ReportFilters = ({
           onToggleOpen={() =>
             setOpenName((prev) => (prev === "category" ? null : "category"))
           }
-          onClose={() => setOpenName(null)}
           onChange={(event) =>
             onChange({ ...filters, [event.target.name]: event.target.value })
           }
@@ -223,15 +257,14 @@ const ReportFilters = ({
           onToggleOpen={() =>
             setOpenName((prev) => (prev === "canal" ? null : "canal"))
           }
-          onClose={() => setOpenName(null)}
           onChange={(event) =>
             onChange({ ...filters, [event.target.name]: event.target.value })
           }
           disabled={disabled}
         />
 
-        <div className={styles.field}>
-          <label>Nome do contato</label>
+        <div className={`${styles.field} ${styles.filter}`}>
+          <h6 className={styles.filterLabel}>Nome do contato</h6>
           <input
             type="text"
             name="contatoNome"
@@ -242,8 +275,8 @@ const ReportFilters = ({
           />
         </div>
 
-        <div className={styles.field}>
-          <label>Número do contato</label>
+        <div className={`${styles.field} ${styles.filter}`}>
+          <h6 className={styles.filterLabel}>Número do contato</h6>
           <input
             type="text"
             name="contatoNumero"
@@ -284,4 +317,3 @@ const ReportFilters = ({
 };
 
 export default ReportFilters;
-

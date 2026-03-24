@@ -1,0 +1,15 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: #e9edf2;
+}
+
+html {
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
+}

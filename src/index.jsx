@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import "./styles/global.css";
 import ReportsDashboard from "./pages/ReportsDashboard";
 
 const container = document.getElementById("root");

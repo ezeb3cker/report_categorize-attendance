@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ReportFilters from "../components/ReportFilters";
+import PageHeader from "../components/PageHeader";
 import MetricCards from "../components/MetricCards";
 import ChartsSection from "../components/ChartsSection";
 import ReportTable from "../components/ReportTable";
@@ -196,43 +197,46 @@ const ReportsDashboard = () => {
   };
 
   return (
-    <div className={styles.dashboardContainer}>
-      <div className={styles.content}>
-        {loading && (
-          <div className={styles.topProgressWrapper}>
-            <div className={styles.topProgressBar} />
-          </div>
-        )}
-        <ReportFilters
-          data={reportData}
-          filters={filters}
-          onChange={handleFiltersChange}
-          onGenerate={handleGenerateReport}
-          onClear={handleClearFilters}
-          disabled={loading || !systemKey}
-        />
+    <div className={styles.pageRoot}>
+      <PageHeader title="Dashboard - Origem de Leads" />
+      <div className={styles.mainShell}>
+        <div className={styles.content}>
+          {loading && (
+            <div className={styles.topProgressWrapper}>
+              <div className={styles.topProgressBar} />
+            </div>
+          )}
+          <ReportFilters
+            data={reportData}
+            filters={filters}
+            onChange={handleFiltersChange}
+            onGenerate={handleGenerateReport}
+            onClear={handleClearFilters}
+            disabled={loading || !systemKey}
+          />
 
-        {loading && (
-          <div className={styles.stateMessage}>Carregando dados...</div>
-        )}
+          {loading && (
+            <div className={styles.stateMessage}>Carregando dados...</div>
+          )}
 
-        {!loading && statusMessage && (
-          <div className={styles.stateMessage}>{statusMessage}</div>
-        )}
+          {!loading && statusMessage && (
+            <div className={styles.stateMessage}>{statusMessage}</div>
+          )}
 
-        {!loading && !!filteredData.length && (
-          <>
-            <MetricCards metrics={metrics} />
-            <ChartsSection
-              chartsData={chartsData}
-              onChartFilterChange={handleChartFilterChange}
-              showConversionInfo={hasCategoriesOutsideConversion}
-            />
-            <ReportTable data={tableData} />
-          </>
-        )}
+          {!loading && !!filteredData.length && (
+            <>
+              <MetricCards metrics={metrics} />
+              <ChartsSection
+                chartsData={chartsData}
+                onChartFilterChange={handleChartFilterChange}
+                showConversionInfo={hasCategoriesOutsideConversion}
+              />
+              <ReportTable data={tableData} />
+            </>
+          )}
 
-        {error && <div className={styles.errorMessage}>{error}</div>}
+          {error && <div className={styles.errorMessage}>{error}</div>}
+        </div>
       </div>
     </div>
   );
